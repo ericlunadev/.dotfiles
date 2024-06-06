@@ -5,7 +5,7 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
 -- Set to true if you have a Nerd Font installed and selected in the terminal
-vim.g.have_nerd_font = false
+vim.g.have_nerd_font = true
 
 -- [[ Setting options ]]
 -- See `:help vim.opt`
@@ -603,12 +603,12 @@ require('lazy').setup({
           -- `friendly-snippets` contains a variety of premade snippets.
           --    See the README about individual language/framework/plugin snippets:
           --    https://github.com/rafamadriz/friendly-snippets
-          -- {
-          --   'rafamadriz/friendly-snippets',
-          --   config = function()
-          --     require('luasnip.loaders.from_vscode').lazy_load()
-          --   end,
-          -- },
+          {
+            'rafamadriz/friendly-snippets',
+            config = function()
+              require('luasnip.loaders.from_vscode').lazy_load()
+            end,
+          },
         },
       },
       'saadparwaiz1/cmp_luasnip',
@@ -732,7 +732,13 @@ require('lazy').setup({
       -- - sd'   - [S]urround [D]elete [']quotes
       -- - sr)'  - [S]urround [R]eplace [)] [']
       require('mini.surround').setup()
-
+      require('mini.starter').setup {
+        header = table.concat {
+          '____ ____ _ ____ _    _  _ _  _ ____  ___ ____ _  _\n',
+          '|___ |__/ | |    |    |  | |\\ | |__|  |   |___ |  |\n',
+          '|___ |  \\ | |___ |___ |__| | \\| |  | .|__/|___  \\/ \n',
+        },
+      }
       -- Visualize and work with indentation
       require('mini.indentscope').setup { draw = {
         animation = function()
@@ -740,9 +746,7 @@ require('lazy').setup({
         end,
       }, symbol = '' }
 
-      require('mini.sessions').setup {
-        autoread = true,
-      }
+      require('mini.sessions').setup()
 
       -- Simple and easy statusline.
       --  You could remove this setup call if you don't like it,
@@ -878,7 +882,14 @@ require('lazy').setup({
       'nvim-tree/nvim-web-devicons',
     },
   },
+  { 'xiyaowong/transparent.nvim' },
 
+  {
+    'ghillb/cybu.nvim',
+    dependencies = {
+      'nvim-tree/nvim-web-devicons',
+    },
+  },
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
   --    This is the easiest way to modularize your config.
   --
@@ -908,6 +919,66 @@ require('lazy').setup({
 })
 
 require('octo').setup()
+require('cybu').setup {
+  position = {
+    relative_to = 'win', -- win, editor, cursor
+    anchor = 'topright', -- topleft, topcenter, topright,
+    -- centerleft, center, centerright,
+    -- bottomleft, bottomcenter, bottomright
+    vertical_offset = 10, -- vertical offset from anchor in lines
+    horizontal_offset = 0, -- vertical offset from anchor in columns
+    max_win_height = 5, -- height of cybu window in lines
+    max_win_width = 0.5, -- integer for absolute in columns
+    -- float for relative to win/editor width
+  },
+  style = {
+    path = 'relative', -- absolute, relative, tail (filename only)
+    path_abbreviation = 'none', -- none, shortened
+    border = 'rounded', -- single, double, rounded, none
+    separator = ' ', -- string used as separator
+    prefix = '…', -- string used as prefix for truncated paths
+    padding = 1, -- left & right padding in number of spaces
+    hide_buffer_id = true, -- hide buffer IDs in window
+    devicons = {
+      enabled = true, -- enable or disable web dev icons
+      colored = true, -- enable color for web dev icons
+      truncate = true, -- truncate wide icons to one char width
+    },
+    highlights = { -- see highlights via :highlight
+      current_buffer = 'CybuFocus', -- current / selected buffer
+      adjacent_buffers = 'CybuAdjacent', -- buffers not in focus
+      background = 'CybuBackground', -- window background
+      border = 'CybuBorder', -- border of the window
+    },
+  },
+  behavior = { -- set behavior for different modes
+    mode = {
+      default = {
+        switch = 'immediate', -- immediate, on_close
+        view = 'rolling', -- paging, rolling
+      },
+      last_used = {
+        switch = 'immediate', -- immediate, on_close
+        view = 'paging', -- paging, rolling
+      },
+      auto = {
+        view = 'rolling', -- paging, rolling
+      },
+    },
+    show_on_autocmd = false, -- event to trigger cybu (eg. "BufEnter")
+  },
+  display_time = 750, -- time the cybu window is displayed
+  exclude = { -- filetypes, cybu will not be active
+    'neo-tree',
+    'fugitive',
+    'qf',
+  },
+  filter = {
+    unlisted = true, -- filter & fallback for unlisted buffers
+  },
+  fallback = function() end, -- arbitrary fallback function
+  -- used in excluded filetypes
+}
 
 require('lualine').setup {
   options = {
@@ -998,12 +1069,6 @@ vim.keymap.set('n', '<leader>d', function()
   end
 end)
 
--- Switch to the next buffer
-vim.keymap.set('n', '<C-n>', ':bnext<CR>', { noremap = true, silent = true })
-
--- Switch to the previous buffer
-vim.keymap.set('n', '<C-p>', ':bprevious<CR>', { noremap = true, silent = true })
-
 -- Git
 vim.keymap.set('n', '<leader>gs', vim.cmd.Git)
 vim.keymap.set('n', '<leader>ga', '<cmd>Git fetch --all<CR>')
@@ -1052,6 +1117,18 @@ vim.keymap.set('n', '<c-f>', '/')
 vim.api.nvim_create_user_command('Browse', function(opts)
   vim.fn.system { 'open', opts.fargs[1] }
 end, { nargs = 1 })
+
+-- cybu
+vim.keymap.set('n', '<C-p>', '<Plug>(CybuPrev)')
+vim.keymap.set('n', '<C-n>', '<Plug>(CybuNext)')
+vim.keymap.set('n', '<s-tab>', '<plug>(CybuLastusedPrev)')
+vim.keymap.set('n', '<tab>', '<plug>(CybuLastusedNext)')
+
+-- Switch to the next buffer
+-- vim.keymap.set('n', '<C-n>', ':bnext<CR>', { noremap = true, silent = true })
+
+-- Switch to the previous buffer
+-- vim.keymap.set('n', '<C-p>', ':bprevious<CR>', { noremap = true, silent = true })
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
