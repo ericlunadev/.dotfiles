@@ -1,0 +1,20 @@
+# open Arc when clicking ctrl and 1
+ctrl - 1 : open -a '/Applications/Arc.app'
+
+# open Arc when clicking ctrl and 1
+ctrl - 2 : open -a '/Applications/WezTerm.app'
+
+# open Arc when clicking ctrl and 1
+ctrl - 3 : open -a '/Applications/Slack.app'
+
+# open Arc when clicking ctrl and 1
+ctrl - 4 : open -a '/Applications/Obsidian.app'
+
+# open Arc when clicking ctrl and 1
+ctrl - 5 : open -a '/Applications/Notion.app'
+
+# open Arc when clicking ctrl and 1
+ctrl - 6 : open -a '/Applications/Arc.app'
+
+# open Arc when clicking ctrl and 1
+ctrl - 7 : open -a '/Applications/Arc.app'
