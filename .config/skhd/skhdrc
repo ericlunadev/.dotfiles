@@ -13,11 +13,5 @@ ctrl - 4 : open -a '/Applications/Obsidian.app'
 # open Arc when clicking ctrl and 1
 ctrl - 5 : open -a '/Applications/Notion.app'
 
-# open Arc when clicking ctrl and 1
-ctrl - 6 : open -a '/Applications/Arc.app'
-
-# open Arc when clicking ctrl and 1
-ctrl - 7 : open -a '/Applications/Arc.app'
-
 # open ChatGPT when clicking cttrl and i
-ctrl - i : open -a '/Applications/ChatGPT.app/
+ctrl - i : open -a '/Applications/ChatGPT.app'
