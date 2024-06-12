@@ -272,6 +272,9 @@ require('lazy').setup({
           },
         },
         -- pickers = {}
+        find_files = {
+          hidden = true,
+        },
         extensions = {
           ['ui-select'] = {
             require('telescope.themes').get_dropdown(),
@@ -827,6 +830,20 @@ require('lazy').setup({
       window = {
         position = 'float',
       },
+      filesystem = {
+        filtered_items = {
+          visible = true,
+          show_hidden_count = true,
+          hide_dotfiles = false,
+          hide_gitignored = true,
+          hide_by_name = {
+            '.git',
+            '.DS_Store',
+            'thumbs.db',
+          },
+          never_show = {},
+        },
+      },
     },
   },
   { 'tpope/vim-fugitive' },
@@ -967,7 +984,7 @@ require('cybu').setup {
     },
     show_on_autocmd = false, -- event to trigger cybu (eg. "BufEnter")
   },
-  display_time = 750, -- time the cybu window is displayed
+  display_time = 1750, -- time the cybu window is displayed
   exclude = { -- filetypes, cybu will not be active
     'neo-tree',
     'fugitive',
@@ -1072,6 +1089,8 @@ end)
 -- Git
 vim.keymap.set('n', '<leader>gs', vim.cmd.Git)
 vim.keymap.set('n', '<leader>ga', '<cmd>Git fetch --all<CR>')
+
+vim.keymap.set('n', '<leader>p', '<cmd>Neotree<CR>')
 
 local ericlunadev = vim.api.nvim_create_augroup('ericlunadev', {})
 
