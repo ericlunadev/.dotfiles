@@ -14,4 +14,4 @@ ctrl - 4 : open -a '/Applications/Obsidian.app'
 ctrl - 5 : open -a '/Applications/Notion.app'
 
 # open ChatGPT when clicking cttrl and i
-ctrl - i : open -a '/Applications/ChatGPT.app'
+ctrl - 6 : open -a '/Applications/ChatGPT.app'

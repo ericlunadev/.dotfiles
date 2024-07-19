@@ -227,7 +227,6 @@ require('lazy').setup({
         -- `build` is used to run some command when the plugin is installed/updated.
         -- This is only run then, not every time Neovim starts up.
         build = 'make',
-
         -- `cond` is a condition used to determine whether this plugin should be
         -- installed and loaded.
         cond = function()
@@ -268,7 +267,11 @@ require('lazy').setup({
         defaults = {
           mappings = {
             -- i = { ['<c-enter>'] = 'to_fuzzy_refine' },
-            i = { ['<c-d>'] = 'delete_buffer' },
+            i = {
+              ['<c-x>'] = 'delete_buffer',
+              ['<C-j>'] = 'cycle_history_next',
+              ['<C-k>'] = 'cycle_history_prev',
+            },
           },
         },
         -- pickers = {}
@@ -299,6 +302,7 @@ require('lazy').setup({
       vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
       vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
       vim.keymap.set('n', '<leader>st', builtin.git_stash, { desc = '[S]earch Git S[t]ash' })
+      -- vim.api.nvim_set_hl(0, 'TelescopeNormal', { bg = 'none' })
       -- Slightly advanced example of overriding default behavior and theme
       vim.keymap.set('n', '<leader>/', function()
         -- You can pass additional configuration to Telescope to change the theme, layout, etc.
@@ -704,6 +708,38 @@ require('lazy').setup({
     -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
     'folke/tokyonight.nvim',
     priority = 1000, -- Make sure to load this before all the other start plugins.
+    opts = {
+      on_highlights = function(hl, c)
+        local prompt = '#2d3149'
+        hl.TelescopeNormal = {
+          bg = c.bg_dark,
+          fg = c.fg_dark,
+        }
+        hl.TelescopeBorder = {
+          bg = c.bg_dark,
+          fg = c.bg_dark,
+        }
+        hl.TelescopePromptNormal = {
+          bg = prompt,
+        }
+        hl.TelescopePromptBorder = {
+          bg = prompt,
+          fg = prompt,
+        }
+        hl.TelescopePromptTitle = {
+          bg = prompt,
+          fg = prompt,
+        }
+        hl.TelescopePreviewTitle = {
+          bg = c.bg_dark,
+          fg = c.bg_dark,
+        }
+        hl.TelescopeResultsTitle = {
+          bg = c.bg_dark,
+          fg = c.bg_dark,
+        }
+      end,
+    },
     init = function()
       -- Load the colorscheme here.
       -- Like many other themes, this one has different styles, and you could load
@@ -750,6 +786,9 @@ require('lazy').setup({
       }, symbol = '' }
 
       require('mini.sessions').setup()
+      require('mini.jump').setup()
+      vim.cmd 'hi MiniJump guifg=#E0AF68 guibg=#1F2335'
+      -- vim.cmd('hi MiniJump guifg=#7AA2F7 guibg=#3B4261')
 
       -- Simple and easy statusline.
       --  You could remove this setup call if you don't like it,
@@ -907,6 +946,8 @@ require('lazy').setup({
       'nvim-tree/nvim-web-devicons',
     },
   },
+  { 'nvim-treesitter/nvim-treesitter-context' },
+  { 'mg979/vim-visual-multi' },
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
   --    This is the easiest way to modularize your config.
   --
@@ -1000,16 +1041,18 @@ require('cybu').setup {
 require('lualine').setup {
   options = {
     icons_enabled = true,
-    theme = 'auto',
-    component_separators = { left = '', right = '' },
-    section_separators = { left = '', right = '' },
+    theme = 'tokyonight',
+    -- component_separators = { left = '', right = '' },
+    -- section_separators = { left = '', right = '' },
+    component_separators = { left = ' ', right = ' ' },
+    section_separators = { left = ' ', right = ' ' },
     disabled_filetypes = {
       statusline = {},
       winbar = {},
     },
     ignore_focus = {},
     always_divide_middle = true,
-    globalstatus = false,
+    globalstatus = true,
     refresh = {
       statusline = 1000,
       tabline = 1000,
@@ -1029,9 +1072,9 @@ require('lualine').setup {
         end,
       },
     },
-    lualine_b = { 'branch', 'diff', 'diagnostics' },
+    lualine_b = { 'branch', 'diagnostics' },
     lualine_c = { 'filename' },
-    lualine_x = { 'encoding', 'fileformat', 'filetype' },
+    lualine_x = { 'fileformat', 'filetype' },
     lualine_y = {},
     lualine_z = { 'location' },
   },
@@ -1131,6 +1174,8 @@ autocmd('BufWinEnter', {
 
     -- Save git stash
     vim.keymap.set('n', '<leader>ss', ':Git stash save -u', opts)
+
+    vim.keymap.set('n', '<leader>sa', ':Git stash save -u "ES setup"', opts)
   end,
 })
 
@@ -1149,8 +1194,8 @@ vim.api.nvim_create_user_command('Browse', function(opts)
 end, { nargs = 1 })
 
 -- cybu
-vim.keymap.set('n', '<C-p>', '<Plug>(CybuPrev)')
-vim.keymap.set('n', '<C-n>', '<Plug>(CybuNext)')
+-- vim.keymap.set('n', '<C-p>', '<Plug>(CybuPrev)') --clashes with vim-visual-multi
+-- vim.keymap.set('n', '<C-n>', '<Plug>(CybuNext)')
 vim.keymap.set('n', '<s-tab>', '<plug>(CybuLastusedPrev)')
 vim.keymap.set('n', '<tab>', '<plug>(CybuLastusedNext)')
 
@@ -1159,6 +1204,8 @@ vim.keymap.set('n', '<tab>', '<plug>(CybuLastusedNext)')
 
 -- Switch to the previous buffer
 -- vim.keymap.set('n', '<C-p>', ':bprevious<CR>', { noremap = true, silent = true })
+
+vim.keymap.set('n', '<leader>bda', ':%bdelete|edit#|bdelete#<CR>', { desc = 'Delete all buffers except the current one' })
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
