@@ -1,5 +1,5 @@
 hyper - n : open -a '/Applications/Arc.app'
 hyper - m : open -a '/Applications/WezTerm.app'
-hyper - , : open -a '/Applications/Slack.app'
-hyper - . : open -a '/Applications/Obsidian.app'
-hyper - h : open -a '/Applications/ChatGPT.app'
+hyper - h : open -a '/Applications/Slack.app'
+hyper - j : open -a '/Applications/Obsidian.app'
+hyper - k : open -a '/Applications/ChatGPT.app'
