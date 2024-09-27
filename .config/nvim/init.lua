@@ -66,6 +66,9 @@ vim.opt.cursorline = true
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 10
 
+-- Save undo history
+vim.opt.undofile = true
+
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
@@ -698,6 +701,12 @@ require('lazy').setup({
           { name = 'path' },
         },
       }
+      cmp.setup.filetype({ 'sql' }, {
+        sources = {
+          { name = 'vim-dadbod-completion' },
+          { name = 'buffer' },
+        },
+      })
     end,
   },
 
@@ -824,6 +833,15 @@ require('lazy').setup({
         additional_vim_regex_highlighting = { 'ruby' },
       },
       indent = { enable = true, disable = { 'ruby' } },
+      incremental_selection = {
+        enable = true,
+        keymaps = {
+          init_selection = '<C-s>',
+          node_incremental = '<C-s>',
+          scope_incremental = false,
+          node_decremental = '<bs>',
+        },
+      },
     },
     config = function(_, opts)
       -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
@@ -867,7 +885,12 @@ require('lazy').setup({
     },
     opts = {
       window = {
-        position = 'float',
+        position = 'right',
+      },
+      follow_current_file = {
+        enabled = true, -- This will find and focus the file in the active buffer every time
+        --               -- the current file is changed while the tree is open.
+        leave_dirs_open = true, -- `false` closes auto expanded dirs, such as with `:Neotree reveal`
       },
       filesystem = {
         filtered_items = {
@@ -885,9 +908,53 @@ require('lazy').setup({
       },
     },
   },
+  {
+    'epwalsh/obsidian.nvim',
+    version = '*', -- recommended, use latest release instead of latest commit
+    lazy = true,
+    ft = 'markdown',
+    -- Replace the above line with this if you only want to load obsidian.nvim for markdown files in your vault:
+    -- event = {
+    --   -- If you want to use the home shortcut '~' here you need to call 'vim.fn.expand'.
+    --   -- E.g. "BufReadPre " .. vim.fn.expand "~" .. "/my-vault/*.md"
+    --   -- refer to `:h file-pattern` for more examples
+    --   "BufReadPre path/to/my-vault/*.md",
+    --   "BufNewFile path/to/my-vault/*.md",
+    -- },
+    dependencies = {
+      -- Required.
+      'nvim-lua/plenary.nvim',
+    },
+    opts = {
+      workspaces = {
+        {
+          name = 'Personal',
+          path = '~/Documents/Obsidian Vault/',
+        },
+      },
+    },
+  },
+  {
+    'MeanderingProgrammer/render-markdown.nvim',
+    opts = {},
+    dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' },
+  },
   { 'tpope/vim-fugitive' },
   { 'tpope/vim-rhubarb' },
-
+  { 'tpope/vim-dadbod' },
+  {
+    'gbprod/substitute.nvim',
+  },
+  { 'kristijanhusak/vim-dadbod-completion' },
+  { 'kristijanhusak/vim-dadbod-ui' },
+  {
+    'otavioschwanck/arrow.nvim',
+    opts = {
+      show_icons = true,
+      leader_key = ',', -- Recommended to be a single key
+      buffer_leader_key = 'm', -- Per Buffer Mappings
+    },
+  },
   {
     'folke/noice.nvim',
     event = 'VeryLazy',
@@ -929,7 +996,19 @@ require('lazy').setup({
     dependencies = { 'nvim-tree/nvim-web-devicons' },
   },
   { 'github/copilot.vim' },
-
+  {
+    'nvim-treesitter/nvim-treesitter-textobjects',
+    lazy = true,
+    config = function()
+      -- TODO finish setting up https://www.josean.com/posts/nvim-treesitter-and-textobjects
+      require('nvim-treesitter.configs').setup {}
+    end,
+  },
+  {
+    'chrisgrieser/nvim-various-textobjs',
+    event = 'UIEnter',
+    opts = { useDefaultKeymaps = true },
+  },
   {
     'pwntester/octo.nvim',
     dependencies = {
@@ -940,12 +1019,6 @@ require('lazy').setup({
   },
   { 'xiyaowong/transparent.nvim' },
 
-  {
-    'ghillb/cybu.nvim',
-    dependencies = {
-      'nvim-tree/nvim-web-devicons',
-    },
-  },
   { 'nvim-treesitter/nvim-treesitter-context' },
   { 'mg979/vim-visual-multi' },
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
@@ -977,66 +1050,17 @@ require('lazy').setup({
 })
 
 require('octo').setup()
-require('cybu').setup {
-  position = {
-    relative_to = 'win', -- win, editor, cursor
-    anchor = 'topright', -- topleft, topcenter, topright,
-    -- centerleft, center, centerright,
-    -- bottomleft, bottomcenter, bottomright
-    vertical_offset = 10, -- vertical offset from anchor in lines
-    horizontal_offset = 0, -- vertical offset from anchor in columns
-    max_win_height = 5, -- height of cybu window in lines
-    max_win_width = 0.5, -- integer for absolute in columns
-    -- float for relative to win/editor width
-  },
-  style = {
-    path = 'relative', -- absolute, relative, tail (filename only)
-    path_abbreviation = 'none', -- none, shortened
-    border = 'rounded', -- single, double, rounded, none
-    separator = ' ', -- string used as separator
-    prefix = '…', -- string used as prefix for truncated paths
-    padding = 1, -- left & right padding in number of spaces
-    hide_buffer_id = true, -- hide buffer IDs in window
-    devicons = {
-      enabled = true, -- enable or disable web dev icons
-      colored = true, -- enable color for web dev icons
-      truncate = true, -- truncate wide icons to one char width
-    },
-    highlights = { -- see highlights via :highlight
-      current_buffer = 'CybuFocus', -- current / selected buffer
-      adjacent_buffers = 'CybuAdjacent', -- buffers not in focus
-      background = 'CybuBackground', -- window background
-      border = 'CybuBorder', -- border of the window
-    },
-  },
-  behavior = { -- set behavior for different modes
-    mode = {
-      default = {
-        switch = 'immediate', -- immediate, on_close
-        view = 'rolling', -- paging, rolling
-      },
-      last_used = {
-        switch = 'immediate', -- immediate, on_close
-        view = 'paging', -- paging, rolling
-      },
-      auto = {
-        view = 'rolling', -- paging, rolling
-      },
-    },
-    show_on_autocmd = false, -- event to trigger cybu (eg. "BufEnter")
-  },
-  display_time = 1750, -- time the cybu window is displayed
-  exclude = { -- filetypes, cybu will not be active
-    'neo-tree',
-    'fugitive',
-    'qf',
-  },
-  filter = {
-    unlisted = true, -- filter & fallback for unlisted buffers
-  },
-  fallback = function() end, -- arbitrary fallback function
-  -- used in excluded filetypes
+require('treesitter-context').setup {
+  multiline_threshold = 2,
 }
+local function trunc(trunc_width)
+  return function(str)
+    if #str <= trunc_width then
+      return str
+    end
+    return str:sub(1, trunc_width) .. '...'
+  end
+end
 
 require('lualine').setup {
   options = {
@@ -1072,8 +1096,22 @@ require('lualine').setup {
         end,
       },
     },
-    lualine_b = { 'branch', 'diagnostics' },
-    lualine_c = { 'filename' },
+    lualine_b = {
+      {
+        'branch',
+        fmt = trunc(30),
+      },
+      'diagnostics',
+    },
+    lualine_c = {
+      'filename',
+      {
+        function()
+          local statusline = require 'arrow.statusline'
+          return statusline.text_for_statusline_with_icons()
+        end,
+      },
+    },
     lualine_x = { 'fileformat', 'filetype' },
     lualine_y = {},
     lualine_z = { 'location' },
@@ -1096,8 +1134,8 @@ vim.keymap.set('n', 'H', '^')
 vim.keymap.set('n', 'L', '$')
 
 -- Center Screen on Navigation
-vim.keymap.set('n', 'J', '<C-d>zz')
-vim.keymap.set('n', 'K', '<C-u>zz')
+vim.keymap.set('n', 'J', '6jzz')
+vim.keymap.set('n', 'K', '6kzz')
 vim.keymap.set('n', '<C-d>', '<C-d>zz')
 vim.keymap.set('n', '<C-u>', '<C-u>zz')
 
@@ -1117,6 +1155,11 @@ vim.keymap.set('n', 'N', 'Nzzzv')
 
 -- Select the whole buffer
 vim.keymap.set('n', 'vv', 'ggVG')
+
+-- Arrow
+vim.keymap.set('n', '<Leader>p', require('arrow.persist').previous)
+vim.keymap.set('n', '<Leader>n', require('arrow.persist').next)
+vim.keymap.set('n', '<Leader>as', require('arrow.persist').toggle)
 
 -- Resize horizontal split, increase
 vim.keymap.set('n', '<Leader>rk', ':resize +5<CR>', { noremap = true, silent = true, desc = 'Increase horizontal split size' })
@@ -1144,7 +1187,9 @@ end)
 vim.keymap.set('n', '<leader>gs', vim.cmd.Git)
 vim.keymap.set('n', '<leader>ga', '<cmd>Git fetch --all<CR>')
 
-vim.keymap.set('n', '<leader>p', '<cmd>Neotree<CR>')
+vim.keymap.set('n', '<leader>fn', '<cmd>Neotree reveal<CR>', { noremap = true, silent = true, desc = 'Toggle [F]ile [N]eotree' })
+vim.keymap.set('n', '<leader>fo', '<cmd>Oil<CR>', { noremap = true, silent = true, desc = 'Toggle [F]ile [O]il' })
+vim.keymap.set('n', '<leader>tgb', '<cmd>Gitsigns toggle_current_line_blame<CR>')
 
 local ericlunadev = vim.api.nvim_create_augroup('ericlunadev', {})
 
@@ -1192,20 +1237,34 @@ vim.keymap.set('n', '<c-f>', '/')
 vim.api.nvim_create_user_command('Browse', function(opts)
   vim.fn.system { 'open', opts.fargs[1] }
 end, { nargs = 1 })
+vim.keymap.set({ 'n', 'v' }, '<leader>gbo', ':GBrowse<cr>') -- git browse current file in browser
+vim.keymap.set({ 'n', 'v' }, '<leader>gby', ':GBrowse!<CR>', { noremap = true, silent = false })
+vim.keymap.set('n', '<leader>gc', ':G checkout FRE-', { noremap = true, silent = false })
 
--- cybu
--- vim.keymap.set('n', '<C-p>', '<Plug>(CybuPrev)') --clashes with vim-visual-multi
--- vim.keymap.set('n', '<C-n>', '<Plug>(CybuNext)')
-vim.keymap.set('n', '<s-tab>', '<plug>(CybuLastusedPrev)')
-vim.keymap.set('n', '<tab>', '<plug>(CybuLastusedNext)')
-
--- Switch to the next buffer
--- vim.keymap.set('n', '<C-n>', ':bnext<CR>', { noremap = true, silent = true })
-
--- Switch to the previous buffer
--- vim.keymap.set('n', '<C-p>', ':bprevious<CR>', { noremap = true, silent = true })
+-- Search and replace
+vim.keymap.set('v', '<C-r>', '"hy:%s/\\v<C-r>h//g<left><left>', { silent = false, desc = 'change selection' })
 
 vim.keymap.set('n', '<leader>bda', ':%bdelete|edit#|bdelete#<CR>', { desc = 'Delete all buffers except the current one' })
+
+-- Copy a pytest command for the current file (relative path) to the clipboard
+vim.api.nvim_set_keymap(
+  'n',
+  '<leader>pyt',
+  [[:lua vim.fn.system('echo "pytest ' .. vim.fn.expand('%') .. ' -vv -s" | pbcopy'); vim.notify('Copied pytest command to clipboard')<CR>]],
+  { noremap = true, silent = true }
+)
+
+-- Substitute
+require('substitute').setup {
+  highlight_substituted_text = {
+    enabled = true, -- Make sure this is set to true or false
+  },
+}
+
+vim.keymap.set('n', 's', require('substitute').operator, { noremap = true })
+vim.keymap.set('n', 'ss', require('substitute').line, { noremap = true })
+vim.keymap.set('n', 'S', require('substitute').eol, { noremap = true })
+vim.keymap.set('x', 's', require('substitute').visual, { noremap = true })
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et

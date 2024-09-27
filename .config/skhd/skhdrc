@@ -1,17 +1,5 @@
-# open Arc when clicking ctrl and 1
-ctrl - 1 : open -a '/Applications/Arc.app'
-
-# open Arc when clicking ctrl and 1
-ctrl - 2 : open -a '/Applications/WezTerm.app'
-
-# open Arc when clicking ctrl and 1
-ctrl - 3 : open -a '/Applications/Slack.app'
-
-# open Arc when clicking ctrl and 1
-ctrl - 4 : open -a '/Applications/Obsidian.app'
-
-# open Arc when clicking ctrl and 1
-ctrl - 5 : open -a '/Applications/Notion.app'
-
-# open ChatGPT when clicking cttrl and i
-ctrl - 6 : open -a '/Applications/ChatGPT.app'
+hyper - n : open -a '/Applications/Arc.app'
+hyper - m : open -a '/Applications/WezTerm.app'
+hyper - , : open -a '/Applications/Slack.app'
+hyper - . : open -a '/Applications/Obsidian.app'
+hyper - h : open -a '/Applications/ChatGPT.app'
