@@ -72,6 +72,13 @@ return {
   { 'tpope/vim-dadbod' },
   {
     'gbprod/substitute.nvim',
+    config = function()
+      require('substitute').setup {
+        highlight_substituted_text = {
+          enabled = true, -- Make sure this is set to true or false
+        },
+      }
+    end,
   },
   { 'kristijanhusak/vim-dadbod-completion' },
   { 'kristijanhusak/vim-dadbod-ui' },
@@ -140,8 +147,18 @@ return {
       'nvim-telescope/telescope.nvim',
       'nvim-tree/nvim-web-devicons',
     },
+    config = function()
+      require('octo').setup()
+    end,
   },
   { 'xiyaowong/transparent.nvim' },
-  { 'nvim-treesitter/nvim-treesitter-context' },
+  {
+    'nvim-treesitter/nvim-treesitter-context',
+    config = function()
+      require('nvim-treesitter.configs').setup {
+        multiline_threshold = 2,
+      }
+    end,
+  },
   { 'mg979/vim-visual-multi' },
 }
