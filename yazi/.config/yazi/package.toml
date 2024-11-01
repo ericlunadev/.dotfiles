@@ -1,0 +1,5 @@
+[plugin]
+deps = [{ use = "yazi-rs/plugins:hide-preview", rev = "9a1129c" }]
+
+[flavor]
+deps = []

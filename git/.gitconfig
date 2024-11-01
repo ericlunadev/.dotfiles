@@ -1,0 +1,8 @@
+[credential]
+	helper = store
+[user]
+	email = 32916033+ericlunadev@users.noreply.github.com
+	name = Eric Luna
+
+[core]
+	pager = less -F -X
