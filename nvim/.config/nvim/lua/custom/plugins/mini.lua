@@ -10,6 +10,26 @@ return {
     --  - ci'  - [C]hange [I]nside [']quote
     require('mini.ai').setup { n_lines = 500 }
     require('mini.bracketed').setup {}
+    require('mini.move').setup {
+      -- Module mappings. Use `''` (empty string) to disable one.
+      mappings = {
+        left = 'H',
+        right = 'L',
+        down = 'J',
+        up = 'K',
+
+        -- Move current line in Normal mode (clashes with window navigation with C and with M clashes with Zellij)
+        -- line_left = '<C-h>',
+        -- line_right = '<C-l>',
+        -- line_down = '<C-j>',
+        -- line_up = '<C-k>',
+      },
+
+      options = {
+        -- Automatically reindent selection during linewise vertical move
+        reindent_linewise = true,
+      },
+    }
 
     -- Add/delete/replace surroundings (brackets, quotes, etc.)
     --
@@ -33,6 +53,7 @@ return {
 
     require('mini.sessions').setup()
     require('mini.jump').setup()
+    require('mini.jump2d').setup()
     vim.cmd 'hi MiniJump guifg=#E0AF68 guibg=#1F2335'
     -- vim.cmd('hi MiniJump guifg=#7AA2F7 guibg=#3B4261')
 

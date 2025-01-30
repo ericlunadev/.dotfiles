@@ -23,7 +23,12 @@ keybinds {
         bind "Alt ]" { NextSwapLayout; }
         bind "Alt f" { ToggleFloatingPanes; }
         bind "Alt s" { SwitchToMode "Scroll"; }
-
+        bind "Alt c" {
+            LaunchOrFocusPlugin "session-manager" {
+                floating true
+                 move_to_focused_tab true
+            };
+        }
     }
     tmux clear-defaults=true {
         bind "Ctrl x" { Write 2; SwitchToMode "Normal"; }

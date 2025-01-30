@@ -43,7 +43,13 @@ return { -- You can easily change to a different colorscheme.
     -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
     vim.cmd.colorscheme 'tokyonight-night'
 
-    -- You can configure highlights by doing something like:
     vim.cmd.hi 'Comment gui=none'
+    -- You can configure highlights by doing something like:
+
+    -- Flash.nvim
+    --
+    local colors = require('tokyonight.colors').setup()
+    vim.api.nvim_set_hl(0, 'FlashCurrent', { fg = colors.orange, bg = colors.bg_search })
+    vim.api.nvim_set_hl(0, 'FlashLabel', { fg = colors.orange, bg = colors.bg_dark })
   end,
 }

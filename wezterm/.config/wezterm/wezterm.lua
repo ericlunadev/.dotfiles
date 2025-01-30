@@ -15,10 +15,12 @@ end)
 -- For example, changing the color scheme:
 config.color_scheme = "Tokyo Night"
 config.font_size = 15
+-- config.font_size = 25
 -- config.font = wezterm.font("GeistMono Nerd Font")
 -- config.font = wezterm.font("SpaceMono Nerd Font")
 -- config.font = wezterm.font 'Fira Code'
 -- config.font = wezterm.font("Departure Mono")
+config.max_fps = 240
 
 config.enable_tab_bar = false
 config.native_macos_fullscreen_mode = true
@@ -67,16 +69,6 @@ config.keys = {
 		mods = "LEADER",
 		action = wezterm.action.SplitVertical({ domain = "CurrentPaneDomain" }),
 	},
-	{
-		key = "1",
-		mods = "CMD",
-		action = wezterm.action.DisableDefaultAssignment,
-	},
-	{
-		key = "2",
-		mods = "CMD",
-		action = wezterm.action.DisableDefaultAssignment,
-	},
 	-- { key = "k", mods = "SHIFT", action = wezterm.action.ScrollByPage(-1) },
 	-- { key = "k", mods = "CMD", action = wezterm.action.ActivateTabRelative(-1) },
 	-- { key = "k", mods = "CTRL", action = wezterm.action.MoveTabRelative(-1) },
@@ -96,5 +88,27 @@ config.keys = {
 		mods = "CMD",
 		action = wezterm.action.CloseCurrentPane({ confirm = true }),
 	},
+	{
+		key = "Y",
+		mods = "CTRL|SHIFT",
+		action = wezterm.action.EmitEvent("toggle-youtube-mode"),
+	},
 }
+
+wezterm.on("toggle-youtube-mode", function(window, pane)
+	is_youtube_mode = not is_youtube_mode -- Toggle the mode
+	local overrides = {}
+
+	if is_youtube_mode then
+		overrides.font_size = 25 -- Larger font size for YouTube Mode
+	-- overrides.window_background_opacity = 0.9 -- Optional: Adjust opacity
+	else
+		overrides.font_size = 15 -- Reset to default
+		-- overrides.window_background_opacity = nil -- Reset to default
+	end
+
+	-- Apply the configuration overrides
+	window:set_config_overrides(overrides)
+end)
+
 return config

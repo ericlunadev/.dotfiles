@@ -69,7 +69,7 @@ return {
   },
   { 'tpope/vim-fugitive' },
   { 'tpope/vim-rhubarb' },
-  { 'tpope/vim-dadbod' },
+  -- { 'tpope/vim-dadbod' },
   {
     'gbprod/substitute.nvim',
     config = function()

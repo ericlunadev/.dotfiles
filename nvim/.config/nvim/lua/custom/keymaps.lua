@@ -14,10 +14,6 @@ vim.keymap.set('n', '<C-j>', '<C-w>j')
 vim.keymap.set('n', '<C-k>', '<C-w>k')
 vim.keymap.set('n', '<C-l>', '<C-w>l')
 
--- In visual mode, pressing J moves the selected block of text down one line, and pressing K moves it up one line. The selection is reselected (gv=gv) after moving.
-vim.keymap.set('v', 'J', ":m '>+1<CR>gv=gv")
-vim.keymap.set('v', 'K', ":m '<-2<CR>gv=gv")
-
 -- Search Results Centering
 vim.keymap.set('n', 'n', 'nzzzv')
 vim.keymap.set('n', 'N', 'Nzzzv')
@@ -28,7 +24,6 @@ vim.keymap.set('n', 'vv', 'ggVG')
 -- Arrow
 vim.keymap.set('n', '<Leader>p', require('arrow.persist').previous)
 vim.keymap.set('n', '<Leader>n', require('arrow.persist').next)
-vim.keymap.set('n', '<Leader>as', require('arrow.persist').toggle)
 
 -- Resize horizontal split, increase
 vim.keymap.set('n', '<Leader>rk', ':resize +5<CR>', { noremap = true, silent = true, desc = 'Increase horizontal split size' })
@@ -99,9 +94,6 @@ vim.keymap.set('n', '<leader>Q', '<cmd>:q!<CR>')
 
 vim.keymap.set('n', '<leader>j', 'J')
 
--- Home row search
-vim.keymap.set('n', '<c-f>', '/')
-
 -- This is for fugitive
 vim.api.nvim_create_user_command('Browse', function(opts)
   vim.fn.system { 'open', opts.fargs[1] }
@@ -129,5 +121,11 @@ vim.keymap.set('n', 'ss', require('substitute').line, { noremap = true })
 vim.keymap.set('n', 'S', require('substitute').eol, { noremap = true })
 vim.keymap.set('x', 's', require('substitute').visual, { noremap = true })
 
--- Keymap for invoice cleanup
-vim.api.nvim_set_keymap('n', '<leader>inv', ':v/#/d \\| g/^s*$/d<CR>', { noremap = true, silent = true, desc = 'Clean up invoice' })
+vim.keymap.set('n', '<leader>tn', function()
+  vim.opt.number = not vim.opt.number:get()
+end, { desc = 'Toggle line numbers' })
+
+-- Toggle relative numbers
+vim.keymap.set('n', '<leader>tr', function()
+  vim.opt.relativenumber = not vim.opt.relativenumber:get()
+end, { desc = 'Toggle relative numbers' })
