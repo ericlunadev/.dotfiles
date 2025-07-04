@@ -60,6 +60,9 @@ return {
           path = '~/Documents/Obsidian Vault/',
         },
       },
+      ui = {
+        enable = false, -- Disable UI to avoid conflict with render-markdown.nvim
+      },
     },
   },
   {
@@ -161,4 +164,19 @@ return {
     end,
   },
   { 'mg979/vim-visual-multi' },
+  {
+    'coder/claudecode.nvim',
+    config = true,
+    keys = {
+      { '<leader>a', nil, desc = 'AI/Claude Code' },
+      { '<leader>ac', '<cmd>ClaudeCode<cr>', desc = 'Toggle Claude' },
+      { '<leader>as', '<cmd>ClaudeCodeSend<cr>', mode = 'v', desc = 'Send to Claude' },
+      {
+        '<leader>as',
+        '<cmd>ClaudeCodeTreeAdd<cr>',
+        desc = 'Add file',
+        ft = { 'NvimTree', 'neo-tree' },
+      },
+    },
+  },
 }
