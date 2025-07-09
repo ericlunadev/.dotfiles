@@ -25,17 +25,6 @@ vim.keymap.set('n', 'vv', 'ggVG')
 vim.keymap.set('n', '<Leader>p', require('arrow.persist').previous)
 vim.keymap.set('n', '<Leader>n', require('arrow.persist').next)
 
--- Resize horizontal split, increase
-vim.keymap.set('n', '<Leader>rk', ':resize +5<CR>', { noremap = true, silent = true, desc = 'Increase horizontal split size' })
-
--- Resize horizontal split, decrease
-vim.keymap.set('n', '<Leader>rj', ':resize -5<CR>', { noremap = true, silent = true, desc = 'Decrease horizontal split size' })
-
--- Resize vertical split, increase
-vim.keymap.set('n', '<Leader>rl', ':vertical resize +5<CR>', { noremap = true, silent = true, desc = 'Increase vertical split size' })
-
--- Resize vertical split, decrease
-vim.keymap.set('n', '<Leader>rh', ':vertical resize -5<CR>', { noremap = true, silent = true, desc = 'Decrease vertical split size' })
 
 local diagnostics_active = true
 vim.keymap.set('n', '<leader>d', function()
@@ -129,3 +118,6 @@ end, { desc = 'Toggle line numbers' })
 vim.keymap.set('n', '<leader>tr', function()
   vim.opt.relativenumber = not vim.opt.relativenumber:get()
 end, { desc = 'Toggle relative numbers' })
+
+-- Switch to Normal mode when on Terminal mode and navigate to left pane
+vim.keymap.set('t', '<C-h>', '<C-\\><C-n><C-w>h', { noremap = true, silent = true })
