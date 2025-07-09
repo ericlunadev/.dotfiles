@@ -21,6 +21,9 @@ vim.keymap.set('n', 'N', 'Nzzzv')
 -- Select the whole buffer
 vim.keymap.set('n', 'vv', 'ggVG')
 
+-- Yank line and comment/uncomment copy
+vim.keymap.set('n', 'yc', 'yygccp')
+
 -- Arrow
 vim.keymap.set('n', '<Leader>p', require('arrow.persist').previous)
 vim.keymap.set('n', '<Leader>n', require('arrow.persist').next)
