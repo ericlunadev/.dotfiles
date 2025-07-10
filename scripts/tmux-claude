@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# Get current pane's working directory
+current_path=$(tmux display-message -p '#{pane_current_path}')
+
+# Find next available CC number
+next_num=1
+while tmux list-windows -F "#{window_name}" | grep -q "^CC${next_num}$"; do
+    next_num=$((next_num + 1))
+done
+
+# Create new window with CC name and run claude
+tmux new-window -c "$current_path" -n "CC${next_num}" "claude"
