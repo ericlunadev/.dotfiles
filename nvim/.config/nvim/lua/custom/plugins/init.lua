@@ -154,7 +154,14 @@ return {
       require('octo').setup()
     end,
   },
-  { 'xiyaowong/transparent.nvim' },
+  { 
+    'xiyaowong/transparent.nvim',
+    config = function()
+      require('transparent').setup({
+        enable = false, -- disable by default
+      })
+    end
+  },
   {
     'nvim-treesitter/nvim-treesitter-context',
     config = function()
@@ -178,5 +185,44 @@ return {
         ft = { 'NvimTree', 'neo-tree' },
       },
     },
+  },
+  {
+    'christoomey/vim-tmux-navigator',
+    keys = {
+      { '<C-h>', '<cmd>TmuxNavigateLeft<cr>', desc = 'Navigate left' },
+      { '<C-j>', '<cmd>TmuxNavigateDown<cr>', desc = 'Navigate down' },
+      { '<C-k>', '<cmd>TmuxNavigateUp<cr>', desc = 'Navigate up' },
+      { '<C-l>', '<cmd>TmuxNavigateRight<cr>', desc = 'Navigate right' },
+      { '<C-\\>', '<cmd>TmuxNavigatePrevious<cr>', desc = 'Navigate previous' },
+    },
+  },
+  {
+    'nguyenvukhang/nvim-toggler',
+    config = function()
+      require('nvim-toggler').setup({
+        inverses = {
+          ['0'] = '1',
+          ['1'] = '0',
+          ['true'] = 'false',
+          ['false'] = 'true',
+          ['True'] = 'False',
+          ['False'] = 'True',
+          ['TRUE'] = 'FALSE',
+          ['FALSE'] = 'TRUE',
+          ['up'] = 'down',
+          ['down'] = 'up',
+          ['Up'] = 'Down',
+          ['Down'] = 'Up',
+          ['UP'] = 'DOWN',
+          ['DOWN'] = 'UP',
+          ['left'] = 'right',
+          ['right'] = 'left',
+          ['Left'] = 'Right',
+          ['Right'] = 'Left',
+          ['LEFT'] = 'RIGHT',
+          ['RIGHT'] = 'LEFT',
+        },
+      })
+    end,
   },
 }
