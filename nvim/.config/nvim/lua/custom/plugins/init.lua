@@ -14,6 +14,12 @@ return {
     opts = {
       window = {
         position = 'right',
+        mappings = {
+          ['l'] = 'open',
+          ['h'] = 'close_node',
+          ['v'] = 'open_vsplit',
+          ['H'] = 'close_all_nodes',
+        },
       },
       follow_current_file = {
         enabled = true, -- This will find and focus the file in the active buffer every time
@@ -154,7 +160,7 @@ return {
       require('octo').setup()
     end,
   },
-  { 
+  {
     'xiyaowong/transparent.nvim',
     config = function()
       require('transparent').setup({

@@ -35,6 +35,15 @@ return { -- You can easily change to a different colorscheme.
         bg = c.bg_dark,
         fg = c.bg_dark,
       }
+      -- Fix neotree background
+      hl.NeoTreeNormal = {
+        bg = c.bg,
+        fg = c.fg,
+      }
+      hl.NeoTreeNormalNC = {
+        bg = c.bg,
+        fg = c.fg,
+      }
     end,
   },
   init = function()
@@ -44,6 +53,12 @@ return { -- You can easily change to a different colorscheme.
     vim.cmd.colorscheme 'tokyonight-night'
 
     vim.cmd.hi 'Comment gui=none'
+    -- Force solid backgrounds for UI elements in transparent terminal
+    vim.cmd.hi 'Normal guibg=#1a1b26'
+    vim.cmd.hi 'NormalFloat guibg=#16161e'
+    vim.cmd.hi 'TelescopeNormal guibg=NONE'
+    vim.cmd.hi 'NeoTreeNormal guibg=#16161e'
+    vim.cmd.hi 'NotifyBackground guibg=#1a1b26'
     -- You can configure highlights by doing something like:
 
     -- Flash.nvim

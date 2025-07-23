@@ -111,11 +111,10 @@ fi
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 export ES_JAVA_HOME=$(/usr/libexec/java_home)
+export VOLTA_HOME="$HOME/.volta"
+export PATH="$VOLTA_HOME/bin:$PATH"
 export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
 
 
@@ -129,9 +128,26 @@ export CPPFLAGS="-I/opt/homebrew/opt/openssl@3/include"
 export PYENV_ROOT="$HOME/.pyenv"
 
 command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
+# Lazy load pyenv
+pyenv() {
+  unset -f pyenv
+  eval "$(pyenv init -)"
+  pyenv "$@"
+}
+
+# Lazy load python when using pyenv
+python() {
+  if [[ "$PYENV_ROOT/bin" == *"$PATH"* ]]; then
+    unset -f python
+    eval "$(pyenv init -)"
+    python "$@"
+  else
+    command python "$@"
+  fi
+}
 export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
 export PATH=$HOME/.local/bin:$PATH
+
 
 # pnpm
 export PNPM_HOME="/Users/ericluna/Library/pnpm"
@@ -184,7 +200,6 @@ cyan="#2CF9ED"
 # ---- Eza (better ls) -----
 alias ls="eza --color=always --long --git --no-filesize --icons=always --no-time --no-user --no-permissions"
 
-
 # ---- Zoxide (better cd) ----
 eval "$(zoxide init zsh)"
 alias cd="z"
@@ -220,3 +235,22 @@ function yy() {
 }
 
 alias tailscale="/Applications/Tailscale.app/Contents/MacOS/Tailscale"
+
+alias pr_last_month="$HOME/.dotfiles/scripts/pr_last_month.sh"
+alias cmd='llm cmd'
+alias nvc="nvim ~/.config/nvim/init.lua"
+function cld() {
+    claude "$@"
+}
+
+function cld-d() {
+    claude --dangerously-skip-permissions "$@"
+}
+
+
+export AWS_PROFILE="mfa-session"
+
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+export SDKMAN_DIR="$HOME/.sdkman"
+[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+export PATH="$HOME/.claude/local/node_modules/.bin:$PATH"

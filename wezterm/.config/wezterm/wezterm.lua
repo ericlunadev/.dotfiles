@@ -15,15 +15,25 @@ end)
 -- For example, changing the color scheme:
 config.color_scheme = "Tokyo Night"
 config.font_size = 15
--- config.font_size = 25
+config.font = wezterm.font_with_fallback({
+	"JetBrains Mono",
+	"Noto Sans Symbols 2",
+})
+
+-- config.font_size = 18
+-- config.font = wezterm.font("Terminess Nerd Font")
+
 -- config.font = wezterm.font("GeistMono Nerd Font")
 -- config.font = wezterm.font("SpaceMono Nerd Font")
--- config.font = wezterm.font 'Fira Code'
+-- config.font = wezterm.font("Fira Code")
 -- config.font = wezterm.font("Departure Mono")
 config.max_fps = 240
 
 config.enable_tab_bar = false
 config.native_macos_fullscreen_mode = true
+
+-- Launch Zellij on startup
+-- config.default_prog = { "zellij", "-l", "welcome" }
 
 config.use_fancy_tab_bar = false
 config.hide_tab_bar_if_only_one_tab = true
@@ -37,7 +47,16 @@ config.window_padding = {
 config.window_background_opacity = 0.9
 config.macos_window_background_blur = 12
 config.background = {
-	background.get_background(),
+	{
+		source = {
+			Gradient = {
+				colors = { "#1a1b26" }, -- Tokyo Night background color
+			},
+		},
+		width = "100%",
+		height = "100%",
+		opacity = 0.95,
+	},
 	background.get_animation(assets .. "/blob_blue_slow.gif"),
 }
 -- config.background = {
