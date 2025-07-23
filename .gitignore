@@ -6,3 +6,6 @@
 
 .config/nvim/spell/
 .config/nvim/lazy-lock.json
+
+# Ignore git config to avoid committing personal settings
+git/.gitconfig
