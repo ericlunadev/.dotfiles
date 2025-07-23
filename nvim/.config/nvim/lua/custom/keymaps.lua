@@ -8,11 +8,12 @@ vim.keymap.set('n', '<C-d>', '<C-d>zz')
 
 vim.keymap.set('n', '<C-u>', '<C-u>zz')
 
--- Switch panes without w
-vim.keymap.set('n', '<C-h>', '<C-w>h')
-vim.keymap.set('n', '<C-j>', '<C-w>j')
-vim.keymap.set('n', '<C-k>', '<C-w>k')
-vim.keymap.set('n', '<C-l>', '<C-w>l')
+-- vim-tmux-navigator keybindings are handled by the plugin
+-- Commented out to prevent conflicts with tmux navigation
+-- vim.keymap.set('n', '<C-h>', '<C-w>h')
+-- vim.keymap.set('n', '<C-j>', '<C-w>j')
+-- vim.keymap.set('n', '<C-k>', '<C-w>k')
+-- vim.keymap.set('n', '<C-l>', '<C-w>l')
 
 -- Search Results Centering
 vim.keymap.set('n', 'n', 'nzzzv')
@@ -43,7 +44,7 @@ end)
 vim.keymap.set('n', '<leader>gs', vim.cmd.Git)
 vim.keymap.set('n', '<leader>ga', '<cmd>Git fetch --all<CR>')
 
-vim.keymap.set('n', '<leader>fn', '<cmd>Neotree reveal<CR>', { noremap = true, silent = true, desc = 'Toggle [F]ile [N]eotree' })
+vim.keymap.set('n', '<leader>e', '<cmd>Neotree toggle<CR>', { noremap = true, silent = true, desc = 'Toggle Neotree' })
 vim.keymap.set('n', '<leader>fo', '<cmd>Oil<CR>', { noremap = true, silent = true, desc = 'Toggle [F]ile [O]il' })
 vim.keymap.set('n', '<leader>tgb', '<cmd>Gitsigns toggle_current_line_blame<CR>')
 
@@ -122,5 +123,10 @@ vim.keymap.set('n', '<leader>tr', function()
   vim.opt.relativenumber = not vim.opt.relativenumber:get()
 end, { desc = 'Toggle relative numbers' })
 
--- Switch to Normal mode when on Terminal mode and navigate to left pane
-vim.keymap.set('t', '<C-h>', '<C-\\><C-n><C-w>h', { noremap = true, silent = true })
+-- Note: vim-tmux-navigator plugin handles <C-h> navigation
+-- Removed terminal mode <C-h> mapping to avoid conflicts with vim-tmux-navigator
+
+-- Close notifications
+vim.keymap.set('n', '<leader>x', function()
+  require('notify').dismiss({ silent = true, pending = true })
+end, { desc = 'Close notifications' })
