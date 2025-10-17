@@ -1,6 +1,10 @@
 vim.keymap.set('n', 'H', '^')
 vim.keymap.set('n', 'L', '$')
 
+-- Swap : and ;
+vim.keymap.set({ 'n', 'v' }, ';', ':')
+vim.keymap.set({ 'n', 'v' }, ':', ';')
+
 -- Center Screen on Navigation
 vim.keymap.set('n', 'J', '6jzz')
 vim.keymap.set('n', 'K', '6kzz')
@@ -44,7 +48,7 @@ end)
 vim.keymap.set('n', '<leader>gs', vim.cmd.Git)
 vim.keymap.set('n', '<leader>ga', '<cmd>Git fetch --all<CR>')
 
-vim.keymap.set('n', '<leader>e', '<cmd>Neotree toggle<CR>', { noremap = true, silent = true, desc = 'Toggle Neotree' })
+vim.keymap.set('n', '<leader>e', '<cmd>Neotree reveal<CR>', { noremap = true, silent = true, desc = 'Reveal file in Neotree' })
 vim.keymap.set('n', '<leader>fo', '<cmd>Oil<CR>', { noremap = true, silent = true, desc = 'Toggle [F]ile [O]il' })
 vim.keymap.set('n', '<leader>tgb', '<cmd>Gitsigns toggle_current_line_blame<CR>')
 
