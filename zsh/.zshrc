@@ -208,7 +208,7 @@ alias cd="z"
 # AWS vault
 if [[ $(command -v aws-vault) ]]; then
   eval "$(aws-vault --completion-script-zsh)"
-  [[ -n "$AWS_VAULT" ]] && PS1="%{$fg[yellow]%}[aws::$AWS_VAULT]%{$reset_color%} $PS1"
+  [[ -n "$AWS_VAULT" ]] && PROMPT="%F{yellow}[aws::$AWS_VAULT]%f $PROMPT"
 fi
 
 eval "$(atuin init zsh)"
@@ -240,12 +240,17 @@ alias pr_last_month="$HOME/.dotfiles/scripts/pr_last_month.sh"
 alias cmd='llm cmd'
 alias nvc="nvim ~/.config/nvim/init.lua"
 function cld() {
-    claude "$@"
+    SHELL=/bin/bash claude "$@"
 }
 
 function cld-d() {
-    claude --dangerously-skip-permissions "$@"
+    SHELL=/bin/bash claude --dangerously-skip-permissions "$@"
 }
+
+alias cc='SHELL=/bin/bash claude --dangerously-skip-permissions'
+alias co='codex --yolo'
+
+alias reset-kanata='launchctl unload ~/Library/LaunchAgents/com.kanata.plist && launchctl load ~/Library/LaunchAgents/com.kanata.plist'
 
 
 export AWS_PROFILE="mfa-session"
@@ -254,3 +259,4 @@ export AWS_PROFILE="mfa-session"
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 export PATH="$HOME/.claude/local/node_modules/.bin:$PATH"
+

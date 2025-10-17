@@ -1,8 +1,11 @@
 [credential]
-	helper = store
+	helper = cache
 [user]
 	email = 32916033+ericlunadev@users.noreply.github.com
 	name = Eric Luna
 
 [core]
 	pager = less -F -X
+
+[includeIf "gitdir:~/Coding/agile-defense/"]
+    path = ~/Coding/agile-defense/.gitconfig-agile
