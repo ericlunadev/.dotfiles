@@ -163,15 +163,16 @@ return {
   {
     'xiyaowong/transparent.nvim',
     config = function()
-      require('transparent').setup({
+      require('transparent').setup {
         enable = false, -- disable by default
-      })
-    end
+      }
+    end,
   },
   {
     'nvim-treesitter/nvim-treesitter-context',
     config = function()
       require('nvim-treesitter.configs').setup {
+        max_lines = 3,
         multiline_threshold = 2,
       }
     end,
@@ -205,7 +206,7 @@ return {
   {
     'nguyenvukhang/nvim-toggler',
     config = function()
-      require('nvim-toggler').setup({
+      require('nvim-toggler').setup {
         inverses = {
           ['0'] = '1',
           ['1'] = '0',
@@ -228,7 +229,7 @@ return {
           ['LEFT'] = 'RIGHT',
           ['RIGHT'] = 'LEFT',
         },
-      })
+      }
     end,
   },
 }

@@ -56,3 +56,19 @@ vim.opt.scrolloff = 10
 
 -- Save undo history
 vim.opt.undofile = true
+
+-- Tab settings
+vim.opt.tabstop = 2      -- Number of spaces tabs count for
+vim.opt.shiftwidth = 2   -- Size of an indent
+vim.opt.expandtab = true -- Use spaces instead of tabs
+
+-- Neovim 0.11 Diagnostic Configuration
+-- virtual_text is now opt-in in 0.11 (was opt-out in 0.10)
+vim.diagnostic.config({
+  underline = true,
+  virtual_text = false,
+  virtual_lines = true,
+  signs = true,
+  update_in_insert = false,
+  severity_sort = true,
+})

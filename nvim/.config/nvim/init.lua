@@ -336,6 +336,10 @@ require('lazy').setup({
             -- by the server configuration above. Useful when disabling
             -- certain features of an LSP (for example, turning off formatting for tsserver)
             server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
+
+            -- Note: Keeping lspconfig.setup() for Mason compatibility
+            -- The new vim.lsp.config/enable API doesn't integrate well with mason-lspconfig yet
+            -- lspconfig itself is not deprecated, only certain usage patterns
             require('lspconfig')[server_name].setup(server)
           end,
         },

@@ -13,6 +13,10 @@ return {
         topdelete = { text = '‾' },
         changedelete = { text = '~' },
       },
+      -- Disable file watcher to avoid 0.11 compatibility issues
+      watch_gitdir = {
+        enable = false,
+      },
       on_attach = function(bufnr)
         local gitsigns = require 'gitsigns'
 
