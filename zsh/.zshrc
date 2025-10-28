@@ -235,7 +235,7 @@ function yy() {
 }
 
 # Create directory and cd into it
-mkdc() {
+mkcd() {
 	mkdir -p "$1" && cd "$1"
 }
 
