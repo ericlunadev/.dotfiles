@@ -234,6 +234,11 @@ function yy() {
 	rm -f -- "$tmp"
 }
 
+# Create directory and cd into it
+mkdc() {
+	mkdir -p "$1" && cd "$1"
+}
+
 alias tailscale="/Applications/Tailscale.app/Contents/MacOS/Tailscale"
 
 alias pr_last_month="$HOME/.dotfiles/scripts/pr_last_month.sh"
