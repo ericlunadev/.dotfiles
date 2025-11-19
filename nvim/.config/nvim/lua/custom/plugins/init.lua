@@ -150,17 +150,6 @@ return {
     opts = { useDefaultKeymaps = true },
   },
   {
-    'pwntester/octo.nvim',
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-      'nvim-telescope/telescope.nvim',
-      'nvim-tree/nvim-web-devicons',
-    },
-    config = function()
-      require('octo').setup()
-    end,
-  },
-  {
     'xiyaowong/transparent.nvim',
     config = function()
       require('transparent').setup {
