@@ -1,0 +1,100 @@
+;; Configuration settings
+(defcfg
+  process-unmapped-keys yes  ;; Allow unmapped keys to pass through
+  sequence-timeout 2000      ;; Timeout for key sequences in milliseconds
+  danger-enable-cmd yes      ;; Enable command execution (use with caution)
+)
+
+;; Define source keys that will be intercepted
+(defsrc
+  caps       ;; Caps Lock key
+  z          ;; Z key
+  spc        ;; Spacebar
+  lmeta      ;; Left Command key (lmeta in kanata)
+  rmeta      ;; Right Command key (rmeta in kanata)
+  tab        ;; Tab key
+  rsft       ;; Right Shift key
+  grv        ;; Backtick/grave key
+  v          ;; V key
+  h j k l    ;; HJKL keys for vim-style navigation
+  m , .      ;; M, comma, period for numpad 1,2,3
+  u i o      ;; UIO for numpad 7,8,9
+)
+
+;; Define key aliases with custom behaviors
+(defalias
+  ;; Caps Lock: tap for Escape, hold for Left Control
+  caps-esc-ctl (tap-hold-press 200 200 esc lctl)
+  
+  ;; Z key: tap for Z, hold for Left Alt
+  z-opt        (tap-hold 200 200 z lalt)
+  
+  ;; Spacebar: tap for Space, hold for Hyper key (all modifiers)
+  spc-hyper    (tap-hold 200 200 spc (multi lalt lctl lsft lmeta))
+  
+  ;; Left Command: tap for Backspace, hold for Left Command
+  lcmd-bspc    (tap-hold 200 200 bspc lmeta)
+  
+  ;; Right Command: tap for Right Command, hold to activate navigation layer
+  rcmd-nav     (tap-hold 200 200 rmeta (layer-while-held nav))
+  
+  ;; Tab: tap for Tab, hold to activate numpad layer
+  tab-numpad   (tap-hold 200 200 tab (layer-while-held numpad))
+  
+  ;; Right Shift: tap for Enter, hold for Right Shift
+  rsft-enter   (tap-hold 200 200 ret rsft)
+
+  ;; V key: tap for V, hold for Left Shift
+  v-sft        (tap-hold 200 200 v lsft)
+
+  ;; M key: tap for M, hold for Right Shift
+  m-sft        (tap-hold 200 200 m rsft)
+)
+
+;; Base layer - default key mappings
+(deflayer base
+  @caps-esc-ctl  ;; Caps Lock with Escape/Control behavior
+  @z-opt         ;; Z with Alt modifier behavior
+  @spc-hyper     ;; Space with Hyper key behavior
+  @lcmd-bspc     ;; Left Command with Backspace behavior
+  @rcmd-nav      ;; Right Command with navigation layer trigger
+  @tab-numpad    ;; Tab with numpad layer trigger
+  @rsft-enter    ;; Right Shift with Enter behavior
+  lmeta          ;; Backtick becomes Left Command
+  @v-sft         ;; V with Shift behavior
+  h j k l        ;; HJKL keys remain as normal letters
+  @m-sft , .     ;; M with Shift behavior, comma and period normal
+  u i o          ;; UIO remain as normal letters
+)
+
+;; Navigation layer - activated when holding Right Command
+(deflayer nav
+  @caps-esc-ctl  ;; Keep same Caps Lock behavior
+  @z-opt         ;; Keep same Z behavior
+  @spc-hyper     ;; Keep same Space behavior
+  @lcmd-bspc     ;; Keep same Left Command behavior
+  @rcmd-nav      ;; Keep Right Command behavior
+  @tab-numpad    ;; Keep Tab behavior
+  @rsft-enter    ;; Keep Right Shift behavior
+  lmeta          ;; Keep backtick as Left Command
+  @v-sft         ;; Keep V with Shift behavior
+  left down up rght  ;; HJKL become arrow keys (vim-style navigation)
+  @m-sft , .     ;; Keep M with Shift behavior
+  u i o          ;; Keep UIO as normal
+)
+
+;; Numpad layer - activated when holding Tab
+(deflayer numpad
+  @caps-esc-ctl  ;; Keep same Caps Lock behavior
+  @z-opt         ;; Keep same Z behavior
+  0              ;; Space becomes 0
+  @lcmd-bspc     ;; Keep same Left Command behavior
+  @rcmd-nav      ;; Keep Right Command behavior
+  @tab-numpad    ;; Keep Tab behavior
+  @rsft-enter    ;; Keep Right Shift behavior
+  lmeta          ;; Keep backtick as Left Command
+  @v-sft         ;; Keep V with Shift behavior
+  4 5 6 4        ;; HJKL: H=4, J=5, K=6, L=4 (duplicate for layout consistency)
+  1 2 3          ;; M (overrides shift behavior), comma, period become 1, 2, 3
+  7 8 9          ;; UIO become 7, 8, 9
+)
